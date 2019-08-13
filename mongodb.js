@@ -20,12 +20,18 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true, useUnifiedTopology: 
     //     console.log(users)
     // })
 
-    db.collection('tasks').findOne({_id: new ObjectID("5d52ef417a3e68b82b363440")}, (error, task) => {
+    // db.collection('tasks').findOne({_id: new ObjectID("5d52ef417a3e68b82b363440")}, (error, task) => {
+    //     if (error) {
+    //         console.log("Unable to find task!")
+    //     }
+    //     console.log(task)
+    // })
+
+    db.collection('tasks').find({completed: false}).toArray((error, users) => {
         if (error) {
-            console.log("Unable to find task!")
+            console.log("Unable to retrieve tasks!")
         }
-        console.log(task)
+
+        console.log(users)
     })
-
-
 })
