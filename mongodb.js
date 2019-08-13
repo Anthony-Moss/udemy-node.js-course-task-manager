@@ -1,10 +1,17 @@
 // CRUD create, read, update, delete
 
-const mongodb = require('mongodb');
-const MongoClient = mongodb.MongoClient
+// const mongodb = require('mongodb');
+// const MongoClient = mongodb.MongoClient
+// const objectID = mongodb.ObjectID
+
+const { MongoClient, ObjectID } = require ('mongodb')
 
 const connectionURL = 'mongodb://127.0.0.1:27017'
 const databaseName = 'task-manager'
+
+const id = new ObjectID()
+console.log(id)
+console.log(id.getTimestamp())
 
 MongoClient.connect(connectionURL, { useNewUrlParser: true, useUnifiedTopology: true }, (error, client) => {
     if (error) {
@@ -14,8 +21,9 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true, useUnifiedTopology: 
     const db = client.db(databaseName)
 
     // db.collection('users').insertOne({
-    //     name: 'Anthony',
-    //     age: 26
+    //     _id: id,
+    //     name: 'Jose',
+    //     age: 23
     // }, (error, result) => {
     //     if (error) {
     //         return console.log('Unable to insert user')
@@ -41,24 +49,25 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true, useUnifiedTopology: 
     //     console.log(result.ops)
     // })
 
-    db.collection('tasks').insertMany([
-        {
-            description: 'do laundry',
-            completed: false
-        },
-        {
-            description: 'go to store',
-            completed: false
-        },
-        {
-            description: 'walk the dogs',
-            completed: true
-        }
-    ], (error, result) => {
-        if (error) {
-            console.log('Unable to insert documents!')
-        }
+    // db.collection('tasks').insertMany([
+    //     {
+    //         description: 'do laundry',
+    //         completed: false
+    //     },
+    //     {
+    //         description: 'go to store',
+    //         completed: false
+    //     },
+    //     {
+    //         description: 'walk the dogs',
+    //         completed: true
+    //     }
+    // ], (error, result) => {
+    //     if (error) {
+    //         console.log('Unable to insert documents!')
+    //     }
 
-        console.log(result.ops)
-    })
+    //     console.log(result.ops)
+    // })
+
 })
