@@ -32,41 +32,57 @@ const User = mongoose.model('User', {
                 throw new Error('Age must be a positive number')
             } 
         }
+    },
+    password: {
+        type: String,
+        required: true,
+        minlength: 7,
+        trim: true,
+        validate(value) {
+            if (value.toLowerCase().includes('password')) {
+                throw new Error('Password cannot contain "password"')
+            } 
+        }
+        
     }
 })
 
 // example of creating instance of User model
-const me = new User({
-    name: '   Anthony  ',
-    email: 'AnThOnY@me.com'
-})
+// const me = new User({
+//     name: '   Anthony  ',
+//     email: 'AnThOnY@me.com',
+//     age: 26,
+//     password: 'Waffles123!'
+// })
 
 // Example of saving instance of User model 
-me.save().then(() => {
-    console.log(me)
-}).catch((error) => {
-    console.log('Error', error)
-})
+// me.save().then(() => {
+//     console.log(me)
+// }).catch((error) => {
+//     console.log('Error', error)
+// })
 
 // Sets model for Task
 const Task = mongoose.model('Task', {
     description: {
-        type: String
+        type: String,
+        trim: true
     },
     completed: {
-        type: Boolean
+        type: Boolean,
+        required: false,
+        default: false
     }
 })
 
 // Example of creating instance of Task model
-// const task = new Task({
-//     description: 'Learn the Mongoose library',
-//     completed: false
-// })
+const task = new Task({
+    description: 'Learn the Mongoose library',
+})
 
 // Example of saving instance of Task model 
-// task.save().then(() => {
-//     console.log(task)
-// }).catch((error) => {
-//     console.log('Error!', error)
-// })
+task.save().then(() => {
+    console.log(task)
+}).catch((error) => {
+    console.log('Error!', error)
+})
