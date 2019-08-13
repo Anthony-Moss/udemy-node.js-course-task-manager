@@ -16,7 +16,16 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true, useUnifiedTopology: 
 
     const db = client.db(databaseName)
 
-    db.collection('users').find({ age: 26 }).toArray((error, users) => {
-        console.log(users)
+    // db.collection('users').find({ age: 26 }).toArray((error, users) => {
+    //     console.log(users)
+    // })
+
+    db.collection('tasks').findOne({_id: new ObjectID("5d52ef417a3e68b82b363440")}, (error, task) => {
+        if (error) {
+            console.log("Unable to find task!")
+        }
+        console.log(task)
     })
+
+
 })
