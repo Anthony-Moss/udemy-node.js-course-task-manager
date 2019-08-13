@@ -12,22 +12,26 @@ const User = mongoose.model('User', {
         required: true
     },
     age: {
-        type: Number
+        type: Number,
+        validate(value) {
+            if(value < 0) {
+                throw new Error('Age must be a positive number')
+            } 
+        }
     }
 })
 
 // example of creating instance of User model
-// const me = new User({
-//     name: 'Anthony',
-//     age: 26
-// })
+const me = new User({
+    name: 'Philip'
+})
 
 // Example of saving instance of User model 
-// me.save().then(() => {
-//     console.log(me)
-// }).catch((error) => {
-//     console.log('Error', error)
-// })
+me.save().then(() => {
+    console.log(me)
+}).catch((error) => {
+    console.log('Error', error)
+})
 
 // Sets model for Task
 const Task = mongoose.model('Task', {
