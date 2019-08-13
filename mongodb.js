@@ -24,18 +24,39 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true, useUnifiedTopology: 
     //     console.log(result.ops)
     // })
 
-    db.collection('users').insertMany([
+    // db.collection('users').insertMany([
+    //     {
+    //         name: 'Jen',
+    //         age: 28
+    //     },
+    //     {
+    //         name: 'Gunther',
+    //         age: 30
+    //     }
+    // ], (error, result) => {
+    //     if (error) {
+    //         return console.log('Unable to insert documents!')
+    //     }
+
+    //     console.log(result.ops)
+    // })
+
+    db.collection('tasks').insertMany([
         {
-            name: 'Jen',
-            age: 28
+            description: 'do laundry',
+            completed: false
         },
         {
-            name: 'Gunther',
-            age: 30
+            description: 'go to store',
+            completed: false
+        },
+        {
+            description: 'walk the dogs',
+            completed: true
         }
     ], (error, result) => {
         if (error) {
-            return console.log('Unable to insert documents!')
+            console.log('Unable to insert documents!')
         }
 
         console.log(result.ops)
