@@ -12,8 +12,8 @@ app.post('/users', (req, res) => {
     
     user.save().then(() => {
         res.send(user)
-    }).catch(() => {
-
+    }).catch((e) => {
+        res.status(400).send(e)
     })
 })
 
