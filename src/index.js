@@ -26,6 +26,15 @@ app.get('/users', (req, res) => {
     })
 })
 
+app.get('/users/:id', (req, res) => {
+    const _id = req.params.id
+    User.findById(_id).then((user) => {
+        res.send(user)
+    }).catch((e) => {
+        res.status().send(e)
+    })
+})
+
 app.post('/tasks', (req, res) => {
     const task = new Task(req.body)
 
