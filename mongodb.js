@@ -16,6 +16,8 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true, useUnifiedTopology: 
 
     const db = client.db(databaseName)
 
+    // db.close();
+
 // CREATE EXAMPLES -------------------------------------------------------------------------------------------------
     // db.collection('users').insertOne({
     //     _id: id,
