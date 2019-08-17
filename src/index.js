@@ -8,11 +8,17 @@ const taskRouter = require('./routes/tasks');
 const app = express();
 const port = process.env.PORT || 3002
 
+// app.use((req, res, next) => {
+//     if (req.method === 'GET') {
+//         res.status(400).send('Get requests are disabled')
+//     } else {
+//         next()
+//     }
+// })
+
 app.use((req, res, next) => {
-    if (req.method === 'GET') {
-        res.status(400).send('Get requests are disabled')
-    } else {
-        next()
+    if (req.method) {
+        res.status(503).send('Site is under mantienance please try back later')
     }
 })
 
