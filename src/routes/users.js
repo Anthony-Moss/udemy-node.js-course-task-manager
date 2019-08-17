@@ -5,10 +5,10 @@ const router = new express.Router();
 
 
 
-router.post('/users', auth, async (req, res) => {
-    const user = new User(req.body)
+router.post('/users', async (req, res) => {
     
     try {
+        const user = new User(req.body)
         await user.save()
         const token = await user.generateAuthToken()
         res.status(201).send({user, token})
@@ -28,13 +28,8 @@ router.post('/users/login', async (req, res) => {
     }
 })
 
-router.get('/users', async (req, res) => {
-    try {
-        const users = await User.find({})
-        res.send(users)
-    } catch (e) {
-        return res.status(500).send(e)
-    }
+router.get('/users/me', auth, async (req, res) => {
+    res.send(req.user)
 })
 
 router.get('/users/:id', async (req, res) => {
