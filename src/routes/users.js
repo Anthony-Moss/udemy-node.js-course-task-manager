@@ -27,7 +27,7 @@ router.post('/users/login', async (req, res) => {
     }
 })
 
-router.post('users/logout', auth, async (req, res) => {
+router.post('/users/logout', auth, async (req, res) => {
     try {
         req.user.tokens  = req.user.tokens.filter((token) => {
             return token.token !== req.token
@@ -39,7 +39,7 @@ router.post('users/logout', auth, async (req, res) => {
     }
 })
 
-router.post('users/logoutall',  auth, async (req, res) => {
+router.post('/users/logoutall',  auth, async (req, res) => {
     try {
         req.user.tokens = []
         await req.user.save()
@@ -50,7 +50,11 @@ router.post('users/logoutall',  auth, async (req, res) => {
 })
 
 router.get('/users/me', auth, async (req, res) => {
-    res.send(req.user)
+    try {
+        res.send(req.user)
+    }  catch (e) {
+        
+    }
 })
 
 
