@@ -10,7 +10,10 @@ const port = process.env.PORT || 3002
 
 const multer = require('multer');
 const upload = multer({
-    dest: 'images'
+    dest: 'images',
+    limits: {
+        fileSize: 1000000
+    }
 })
 app.post('/upload', upload.single('upload'), (req, res) => {
     res.send()
