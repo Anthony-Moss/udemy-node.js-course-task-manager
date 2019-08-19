@@ -2,6 +2,7 @@ const User = require('../models/user');
 const express = require('express');
 const auth = require('../middleware/auth');
 const router = new express.Router();
+const multer = require('multer');
 
 
 
@@ -47,6 +48,14 @@ router.post('/users/logoutall',  auth, async (req, res) => {
     } catch (e) {
         res.status(500).send()
     }
+})
+
+const upload = multer({
+    dest: 'images'
+})
+
+router.post('/users/me/avatar', upload.single('avatar'), (req, res)  => {
+    res.send()
 })
 
 router.get('/users/me', auth, async (req, res) => {
