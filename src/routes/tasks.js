@@ -3,6 +3,7 @@ const Task = require('../models/task');
 const auth  = require('../middleware/auth');
 const router = new express.Router();
 
+// Task Router for creating a new task
 router.post('/tasks', auth, async (req, res) => {
     const task = new Task({
         ...req.body,
@@ -16,7 +17,11 @@ router.post('/tasks', auth, async (req, res) => {
     }
 })
 
+// Task request for viewing all of a users tasks
+// Has query options to be used for pagination (examples below)
 // GET /tasks?completed=false 
+// GET /tasks?limit=1
+// GET /tasks?skip=1
 router.get('/tasks', auth, async (req, res) => {
     const match = {}
     const sort = {}
@@ -47,6 +52,7 @@ router.get('/tasks', auth, async (req, res) => {
     }
 })
 
+// Task Route for viewing a single task of a user searching by the task's id
 router.get('/tasks/:id', auth, async (req, res) => {
     const _id = req.params.id
 
@@ -61,6 +67,7 @@ router.get('/tasks/:id', auth, async (req, res) => {
     }
 })
 
+// Task Route for updating a users task, searching by tasks id
 router.patch('/tasks/:id', auth, async (req, res) => {
     const updates = Object.keys(req.body)
     const allowedUpdates = ['description', 'completed']
@@ -85,6 +92,7 @@ router.patch('/tasks/:id', auth, async (req, res) => {
     }
 })
 
+// Task Route used to delete a users task by id
 router.delete('/tasks/:id', auth, async (req, res) => {
     try {
         const task = await Task.findOneAndDelete({ _id: req.params.id, owner: req.user._id})
