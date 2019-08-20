@@ -50,34 +50,6 @@ router.post('/users/logoutall',  auth, async (req, res) => {
     }
 })
 
-const upload = multer({
-    dest: 'images',
-    limits: {
-        fileSize: 1000000
-    },
-    fileFilter(req, file, cb) {
-        if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
-            return cb(new Error('Please upload either jpg, jpeg or png files'))
-        }
-        cb(undefined, true)
-    }
-})
-
-router.post('/users/me/avatar', upload.single('avatar'), (req, res)  => {
-    res.send()
-}, (error, req, res, next) => {
-    res.status(400).send({ error: error.message })
-})
-
-router.get('/users/me', auth, async (req, res) => {
-    try {
-        res.send(req.user)
-    }  catch (e) {
-        
-    }
-})
-
-
 router.patch('/users/me', auth, async (req, res) => {
     const updates = Object.keys(req.body)
     const allowedUpdates = ['name', 'email', 'password', 'age']
@@ -103,6 +75,26 @@ router.delete('/users/me', auth, async (req, res)  => {
     } catch (e) {
         res.status(500).send(e)
     }
+})
+
+const upload = multer({
+    limits: {
+        fileSize: 1000000
+    },
+    fileFilter(req, file, cb) {
+        if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+            return cb(new Error('Please upload either jpg, jpeg or png files'))
+        }
+        cb(undefined, true)
+    }
+})
+
+router.post('/users/me/avatar', auth, upload.single('avatar'), async (req, res)  => {
+    req.user.avatar = req.file.buffer
+    await req.user.save()
+    res.send()
+}, (error, req, res, next) => {
+    res.status(400).send({ error: error.message })
 })
 
 module.exports = router
