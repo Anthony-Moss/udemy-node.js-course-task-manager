@@ -2,8 +2,9 @@ const User = require('../models/user');
 const express = require('express');
 const auth = require('../middleware/auth');
 const sharp =require('sharp');
-const router = new express.Router();
 const multer = require('multer');
+const { sendWelcomeEmail } = require('../emails/account');
+const router = new express.Router();
 
 
 // User Route to create new user (generates token so no need to re-login after creation)
@@ -12,6 +13,7 @@ router.post('/users', async (req, res) => {
     try {
         const user = new User(req.body)
         await user.save()
+        sendWelcomeEmail(user.email, user.name)
         const token = await user.generateAuthToken()
         res.status(201).send({user, token})
     } catch (e) {
