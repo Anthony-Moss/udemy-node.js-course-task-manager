@@ -13,7 +13,16 @@ const sendWelcomeEmail = (email, name) => {
     })
 }
 
+const sendCancelationEmail = (email, name) => {
+    sgMail.send({
+        to: email,
+        from: 'anthonymoss.dev@gmail.com',
+        subject: "Sorry to see you leave!",
+        text: `${name}, we are sad to see you leave! If you have any suggestions on how we could have done better we would love to hear them!`
+    })
+}
 
 module.exports = { 
-    sendWelcomeEmail
+    sendWelcomeEmail,
+    sendCancelationEmail
 }
