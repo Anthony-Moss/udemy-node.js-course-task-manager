@@ -3,7 +3,7 @@ const express = require('express');
 const auth = require('../middleware/auth');
 const sharp =require('sharp');
 const multer = require('multer');
-const { sendWelcomeEmail } = require('../emails/account');
+const { sendWelcomeEmail, sendCancelationEmail } = require('../emails/account');
 const router = new express.Router();
 
 
@@ -111,6 +111,7 @@ router.post('/users/me/avatar', auth, upload.single('avatar'), async (req, res) 
 
 // User route for deleting avatar/profile picture
 router.delete('/users/me/avatar', auth, async (req, res) => {
+    sendCancelationEmail(req.user.email, req.user.name)
     req.user.avatar = undefined
     await req.user.save()
     res.send()
