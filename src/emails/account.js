@@ -4,10 +4,16 @@ const sendGridAPIKey = 'SG.qGXN9_B8SMaVNei77ZEIdg.8LSq3GAvaDRwwTcXMC6GmXaA205lc1
 
 sgMail.setApiKey(sendGridAPIKey)
 
-sgMail.send({
-    to: 'asmoss93@gmail.com',
-    from: 'asmoss93@gmail.com',
-    subject: 'This is my example email',
-    text: 'I hope this works!'
-})
+const sendWelcomeEmail = (email, name) => {
+    sgMail.send({
+        to: email,
+        from: 'anthonymoss.dev@gmail.com',
+        subject: 'Welcome! Thanks for joining!',
+        text: `Welcome to my task app, ${name}. Let me know how you get along with the app. `
+    })
+}
 
+
+module.exports = { 
+    sendWelcomeEmail
+}
