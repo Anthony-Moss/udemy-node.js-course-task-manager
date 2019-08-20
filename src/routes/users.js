@@ -5,7 +5,7 @@ const router = new express.Router();
 const multer = require('multer');
 
 
-
+// User Route to create new user (generates token so no need to re-login after creation)
 router.post('/users', async (req, res) => {
     
     try {
@@ -18,6 +18,7 @@ router.post('/users', async (req, res) => {
     }
 })
 
+// User Route for user to login (generates tokens that is good for your session) 
 router.post('/users/login', async (req, res) => {
     try {
         const user = await User.findByCredentials(req.body.email, req.body.password)
@@ -28,6 +29,7 @@ router.post('/users/login', async (req, res) => {
     }
 })
 
+// User Route for logging out of account (deletes associated login token)
 router.post('/users/logout', auth, async (req, res) => {
     try {
         req.user.tokens  = req.user.tokens.filter((token) => {
@@ -40,6 +42,7 @@ router.post('/users/logout', auth, async (req, res) => {
     }
 })
 
+// User Route for logging out of all site instances for a user (clears all of their tokens, not just recent one from signin)
 router.post('/users/logoutall',  auth, async (req, res) => {
     try {
         req.user.tokens = []
@@ -50,6 +53,7 @@ router.post('/users/logoutall',  auth, async (req, res) => {
     }
 })
 
+// User Route for users to update their account information
 router.patch('/users/me', auth, async (req, res) => {
     const updates = Object.keys(req.body)
     const allowedUpdates = ['name', 'email', 'password', 'age']
@@ -68,6 +72,7 @@ router.patch('/users/me', auth, async (req, res) => {
     }
 })
 
+// User Route for deleting a users account (uses remove to delete all tasks they have as well)
 router.delete('/users/me', auth, async (req, res)  => {
     try {
         await req.user.remove()
@@ -77,6 +82,7 @@ router.delete('/users/me', auth, async (req, res)  => {
     }
 })
 
+// Sets up requirements for uploaded avatar using multer
 const upload = multer({
     limits: {
         fileSize: 1000000
@@ -89,6 +95,7 @@ const upload = multer({
     }
 })
 
+// User Route for adding/updating their user profile
 router.post('/users/me/avatar', auth, upload.single('avatar'), async (req, res)  => {
     req.user.avatar = req.file.buffer
     await req.user.save()
@@ -97,12 +104,11 @@ router.post('/users/me/avatar', auth, upload.single('avatar'), async (req, res) 
     res.status(400).send({ error: error.message })
 })
 
+// User route for deleting avatar/profile picture
 router.delete('/users/me/avatar', auth, async (req, res) => {
     req.user.avatar = undefined
     await req.user.save()
     res.send()
-}, (error, req, res, next) => {
-    res.status(400).send({ error: error.message })
 })
 
 module.exports = router
