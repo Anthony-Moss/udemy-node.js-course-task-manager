@@ -8,4 +8,7 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true, useUnifiedTopology: 
     if (error) {
         return console.log('Unable to connect to database!')
     }
+    const db = client.db(databaseName)
+
+    db.close();
 })
