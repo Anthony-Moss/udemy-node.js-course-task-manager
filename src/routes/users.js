@@ -85,6 +85,7 @@ router.delete('/users/me', auth, async (req, res)  => {
     }
 })
 
+// User Route for viewing own account information
 router.get('/users/me', auth, async (req, res) => {
     try {
         const user = req.user
