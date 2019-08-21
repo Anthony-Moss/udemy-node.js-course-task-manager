@@ -85,6 +85,15 @@ router.delete('/users/me', auth, async (req, res)  => {
     }
 })
 
+router.get('/users/me', auth, async (req, res) => {
+    try {
+        const user = req.user
+        res.send(user)
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
 // Sets up requirements for uploaded avatar using multer
 const upload = multer({
     limits: {
