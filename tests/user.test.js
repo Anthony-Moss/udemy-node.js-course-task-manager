@@ -22,21 +22,36 @@ beforeEach(async () => {
 })
 
 test('Should signup a new user', async () => {
-    await request(app).post('/users').send({
-        name: 'Anthony',
-        email: 'Anthony@me.com',
-        password: 'MyPass123!'
-    }).expect(201)
+    await request(app).post('/users')
+        .send({
+            name: 'Anthony',
+            email: 'Anthony@me.com',
+            password: 'MyPass123!'
+        }).expect(201)
 })
 
 test('Should login existing user', async () => {
-    await request(app).post('/users/login').send(userOne).expect(200)
+    await request(app)
+    .post('/users/login')
+    .send(userOne)
+    .expect(200)
 })
 
 test('Should fail logging in user with wrong credentials', async () => {
-    await request(app).post('/users/login').send({
-        name: "Jotaro",
-        email: 'Jojo@goodgreif.com',
-        password: 'HamonBlast1!'
-    }).expect(400)
+    await request(app)
+        .post('/users/login')
+        .send({
+            name: "Jotaro",
+            email: 'Jojo@goodgreif.com',
+            password: 'HamonBlast1!'
+        })
+        .expect(400)
+})
+
+test('Should get profile for user', async  () =>{
+    await request(app)
+        .get('/users/me')
+        .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+        .send()
+        .expect(200)
 })
