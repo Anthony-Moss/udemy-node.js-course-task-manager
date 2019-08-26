@@ -25,7 +25,7 @@ test('Should signup a new user', async () => {
     await request(app).post('/users')
         .send({
             name: 'Anthony',
-            email: 'Anthony@me.com',
+            email: 'Anthony@example.com',
             password: 'MyPass123!'
         }).expect(201)
 })
@@ -48,7 +48,7 @@ test('Should fail logging in user with wrong credentials', async () => {
         .expect(400)
 })
 
-test('Should get profile for user', async  () =>{
+test('Should get profile for user', async  () => {
     await request(app)
         .get('/users/me')
         .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
@@ -61,4 +61,20 @@ test('Should not get profile for unauthenticated user', async () => {
     .get('/users/me')
     .send()
     .expect(401)
+})
+
+
+test('Should not delete account for unauthorized user', async () => {
+    await request(app)
+    .delete('/users/me')
+    .send()
+    .expect(401)
+})
+
+test('Should delete account for authorized user', async () => {
+    await request(app)
+    .delete('/users/me')
+    .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+    .send()
+    .expect(200)
 })
