@@ -24,3 +24,11 @@ test('Should signup a new user', async () => {
 test('Should login existing user', async () => {
     await request(app).post('/users/login').send(userOne).expect(200)
 })
+
+test('Should fail logging in user with wrong credentials', async () => {
+    await request(app).post('/users/login').send({
+        name: "Jotaro",
+        email: 'Jojo@goodgreif.com',
+        password: 'HamonBlast1!'
+    }).expect(400)
+})
