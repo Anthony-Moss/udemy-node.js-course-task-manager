@@ -46,9 +46,9 @@ test('Should signup a new user', async () => {
 
 test('Should login existing user', async () => {
     const response = await request(app)
-    .post('/users/login')
-    .send(userOne)
-    .expect(200)
+        .post('/users/login')
+        .send(userOne)
+        .expect(200)
 
     const user = await User.findById(userOneId)
     expect(response.body.token).toBe(user.tokens[1].token)
@@ -75,17 +75,17 @@ test('Should get profile for user', async  () => {
 
 test('Should not get profile for unauthenticated user', async () => {
     await request(app)
-    .get('/users/me')
-    .send()
-    .expect(401)
+        .get('/users/me')
+        .send()
+        .expect(401)
 })
 
 
 test('Should not delete account for unauthorized user', async () => {
     await request(app)
-    .delete('/users/me')
-    .send()
-    .expect(401)
+        .delete('/users/me')
+        .send()
+        .expect(401)
 
     // Assertion to ensure user is not deleted from db
     const user = await User.findById(userOneId)
@@ -94,12 +94,45 @@ test('Should not delete account for unauthorized user', async () => {
 
 test('Should delete account for authorized user', async () => {
     const response = await request(app)
-    .delete('/users/me')
-    .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
-    .send()
-    .expect(200)
+        .delete('/users/me')
+        .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+        .send()
+        .expect(200)
 
     // Assertion to ensure user is deleted from db
     const user = await User.findById(userOneId)
     expect(user).toBeNull()
+})
+
+test('Should upload avatar image', async () => {
+    await request(app)
+        .post('/users/me/avatar')
+        .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+        .attach('avatar', 'tests/fixtures/profile-pic.jpg')
+        .expect(200)
+    
+    const user = await User.findById(userOneId)
+    expect(user.avatar).toEqual(expect.any(Buffer))
+})
+
+test('Should update valid user fields', async () => {
+    await request(app)
+        .patch('/users/me')
+        .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+        .send({
+            name: 'Jonathan'
+        })
+        .expect(200)
+    const user = await User.findById(userOneId)
+    expect(user.name).toEqual('Jonathan')
+})
+
+test('Should not update invalid user fields', async () => {
+    await request(app)
+        .patch('/users/me')
+        .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+        .send({
+            location: 'Atlanta'
+        })
+        .expect(400)
 })
