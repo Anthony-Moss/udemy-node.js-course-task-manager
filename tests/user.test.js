@@ -86,12 +86,20 @@ test('Should not delete account for unauthorized user', async () => {
     .delete('/users/me')
     .send()
     .expect(401)
+
+    // Assertion to ensure user is not deleted from db
+    const user = await User.findById(userOneId)
+    expect(user).not.toBeNull()
 })
 
 test('Should delete account for authorized user', async () => {
-    await request(app)
+    const response = await request(app)
     .delete('/users/me')
     .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
     .send()
     .expect(200)
+
+    // Assertion to ensure user is deleted from db
+    const user = await User.findById(userOneId)
+    expect(user).toBeNull()
 })
