@@ -15,10 +15,8 @@ const userOne = {
 }
 
 const setupDatabase = async () => {
-    beforeEach(async () => {
-        await User.deleteMany()
-        await new User(userOne).save()
-    })
+    await User.deleteMany()
+    await new User(userOne).save()
 }
 
 module.exports = {
