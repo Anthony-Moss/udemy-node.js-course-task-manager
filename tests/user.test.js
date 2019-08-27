@@ -45,10 +45,13 @@ test('Should signup a new user', async () => {
 })
 
 test('Should login existing user', async () => {
-    await request(app)
+    const response = await request(app)
     .post('/users/login')
     .send(userOne)
     .expect(200)
+
+    const user = await User.findById(userOneId)
+    expect(response.body.token).toBe(user.tokens[1].token)
 })
 
 test('Should fail logging in user with wrong credentials', async () => {
